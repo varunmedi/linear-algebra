@@ -1,0 +1,11 @@
+.clangd
+.cache/
+scratch/
+build/
+target/
+build-web/
+web/resources/*
+!web/resources/.gitkeep
+!web/resources/index.html
+
+.DS_Store

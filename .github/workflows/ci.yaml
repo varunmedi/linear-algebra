@@ -1,0 +1,37 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-upload-web:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Docker buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Web target in Docker
+        run: |
+          docker build -t web-build -f Dockerfile.ci .
+
+      - name: Copy build output from container
+        run: |
+          container_id=$(docker create web-build)
+          docker cp "$container_id":/app/build-web/linear_algebra.js ./linear_algebra.js
+          docker rm "$container_id"
+
+      - name: Authenticate with Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: '${{ secrets.SERVICE_ACCOUNT_JSON }}'
+
+      - name: Upload to GCS
+        uses: google-github-actions/upload-cloud-storage@v2
+        with:
+          path: linear_algebra.js
+          destination: varun.io

@@ -1,0 +1,7 @@
+build/
+build-web/
+.cache/
+scratch/
+.clangd
+
+.DS_Store

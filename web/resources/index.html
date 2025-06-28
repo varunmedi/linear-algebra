@@ -1,0 +1,56 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Linear Algebra WASM Widget</title>
+    <style>
+canvas {
+    display: block;
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+    </style>
+  </head>
+  <body>
+    <div>
+      <button onclick="Module.requestFullscreen(false, true);">
+        Full screen
+      </button>
+    </div>
+
+   <div
+      style="
+        max-width: 800px;
+        overflow: hidden;
+        display: flex;
+        place-items: center;
+        justify-content: center;
+        align-items: center;
+        max-height: 400px;"
+    >
+      <canvas
+        class="emscripten"
+        id="canvas"
+        oncontextmenu="event.preventDefault()"
+        tabindex="-1"
+        <!-- style = "min-width: 1000px;" -->
+        style="max-width: 800px;"
+      ></canvas>
+    </div>
+    <script type="text/javascript">
+      var canvasElement = document.getElementById("canvas");
+
+      var Module = {
+        canvas: canvasElement,
+
+        onRuntimeInitialized: function () {
+          console.log("WASM module initialized");
+        },
+      };
+    </script>
+
+    <script async type="text/javascript" src="linear_algebra.js"></script>
+  </body>
+</html>
